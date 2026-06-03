@@ -37,7 +37,7 @@ provider "aws" {
 }
 ```
 
-Use `data` block to make API calls to AWS via Provider to get resource information, there is no resource creations happening here
+Use `data` block to make API calls to AWS via Provider to get resource information, no resource creations happening here
 ```terraform
 data "aws_ami" "ubuntu" { # amazon machine image
   most_recent = true
