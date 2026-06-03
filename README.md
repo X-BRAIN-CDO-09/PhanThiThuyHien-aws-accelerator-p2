@@ -3,22 +3,37 @@
 ### Terraform 
 #### Core Concepts
 - [x] What Infrastructure as Code is.
-- [x] The Terraform workflow: `init`, `fmt`, `plan`, `apply`, and `destroy`.
+- [x] Terraform workflow: `init`, `fmt`, `plan`, `apply`, and `destroy`.
 - [x] The meaning of Terraform plan symbols: `+`, `~`, `-`, and `-/+`.
 - [x] Define a `provider`, `resource`, `data source`.
 - [x] Reference resource attributes using `<resource_type>.<resource_name>.<attribute>`.
 
 #### Variables and Data Types
-- [x] Declare variables.
-- [x] Pass variable values through `terraform.tfvars`.
+- [x] Declare variables via variables.tf file
+- [x] Pass actual variable values through `terraform.tfvars`.
 - [x] Data types: `string`, `number`, and `bool`, `list`, `set`, `map`, `tuple`, and `object`.
 - [x] The difference between `list`, `tuple`, and `set`.
 - [x] Use variable validation to restrict valid input values.
+```terraform
+variable "min_size" {
+  description = "The minimum number of EC2 Instances in the ASG"
+  type        = number
+
+  validation {
+      condition     = var.min_size > 0
+      error_message = "ASGs can't be empty or we'll have an outage!" 
+  } 
+  validation {
+      condition     = var.min_size <= 10
+      error_message = "ASGs must have 10 or fewer instances to keep costs down." 
+  }
+}
+```
 - [x] Use `sensitive = true` for sensitive variables.
 
 #### Locals and Outputs
 - [x] Understand how `locals` are used to define reusable internal values.
-- [x] Know how to output values such as: VPC ID, subnet ID, Lambda ARN, and API Gateway endpoint after `terraform apply`
+- [x] How to output values such as: VPC ID, subnet ID, Lambda ARN, and API Gateway endpoint after `terraform apply`
 
 #### Data Sources
 - [x] Understand that data sources are used to read existing information from AWS (does not create new resources)
@@ -30,6 +45,12 @@
 #### Meta-arguments
 - [x] `count` is used to create multiple resources by number.
 - [x] `for_each` is used to create multiple resources from a map or set.
+```terraform
+resource "aws_iam_user" "users" {
+  for_each = toset(["alice", "bob", "charlie"])
+  name     = each.key # Evaluates to "alice", "bob", then "charlie"
+}
+```
 - [x] Understand when to use `count` and when to use `for_each`.
 - [x] Know how to use `depends_on` to control resource creation order.
 - [ ] Understand the lifecycle block.
@@ -44,6 +65,12 @@
 - [ ] `jsonencode()` to generate JSON, especially for IAM policies.
 - [ ] `file()` and `filebase64sha256()` for Lambda packages.
 - [ ] `templatefile()` for more complex configuration templates.
+- [x] `for` loop
+```terraform
+output "upper_names" {
+  value = [for name in var.names : upper(name)]
+}
+```
 
 #### Modules
 - [x] Understand what Terraform modules are and why they are useful.
