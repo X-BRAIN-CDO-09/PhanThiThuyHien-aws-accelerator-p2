@@ -1,0 +1,6 @@
+aws_region   = "us-west-2"
+project_name = "Xbrain-dochub-w7"
+
+vpc_cidr                 = ""
+vpc_az1_private_app_cidr = ""
+vpc_az2_private_app_cidr = ""
