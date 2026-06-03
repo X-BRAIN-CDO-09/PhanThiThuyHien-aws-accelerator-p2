@@ -1,35 +1,112 @@
 # What I have learned so far 
 ## Week 1
 ### Terraform 
+Resources:
+- https://devopsvn.tech/terraform-series/terraform
+- Terraform Up & Running book
+
 #### Core Concepts
-- [x] What Infrastructure as Code is.
-- [x] Terraform workflow: `init`, `fmt`, `plan`, `apply`, and `destroy`.
-- [x] The meaning of Terraform plan symbols: `+`, `~`, `-`, and `-/+`.
-- [x] Define a `provider`, `resource`, `data source`.
-- [x] Reference resource attributes using `<resource_type>.<resource_name>.<attribute>`.
+- [x] What Infrastructure as Code is
+<img width="1920" height="888" alt="image" src="https://github.com/user-attachments/assets/38de2b97-0539-4209-b9c1-4658d8ffb557" />
+
+- [x] Terraform workflow: `init`, `fmt`, `plan`, `apply`, and `destroy`
+- [x] The meaning of Terraform plan symbols: `+` create, `~` update in-place, `-` destroy, and `-/+` destroy & recreate
+- [x] Define a `provider`, `resource`, `data source`
+```terraform
+variable "project_name" {
+  description = "Project name used as a prefix for all resources"
+  type        = string
+  default     = "Xbrain-w5"
+}
+```
+
+```terraform
+terraform {
+  required_version = ">= 1.5.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+provider "aws" {
+  region = "ap-southeast-1"
+}
+```
+
+- [x] Reference resource attributes using `<resource_type>.<resource_name>.<attribute>`
+```terraform
+resource "aws_security_group" "web_sg" {
+  name        = "web-sg"
+  description = "Allow HTTP traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+resource "aws_instance" "web_server" {
+  ami           = "ami-1234567890abcdef0"
+  instance_type = "t2.micro"
+
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
+
+  tags = {
+    Name = "web-server"
+  }
+}
+```
 
 #### Variables and Data Types
-- [x] Declare variables via variables.tf file
-- [x] Pass actual variable values through `terraform.tfvars`.
-- [x] Data types: `string`, `number`, and `bool`, `list`, `set`, `map`, `tuple`, and `object`.
-- [x] The difference between `list`, `tuple`, and `set`.
-- [x] Use variable validation to restrict valid input values.
+- [x] Declare variables via **variables.tf** file
+- [x] Pass actual variable values through `terraform.tfvars` (don't push this file on Github)
+- [x] Data types: `string`, `number`, and `bool`, `list`, `set`, `map`, `tuple`, and `object`
+- [x] The difference between `list`, `tuple`, and `set`
+- [x] Use variable validation to restrict valid input values
 ```terraform
-variable "min_size" {
-  description = "The minimum number of EC2 Instances in the ASG"
-  type        = number
+provider "aws" {
+  region = "us-west-2"
+}
 
-  validation {
-      condition     = var.min_size > 0
-      error_message = "ASGs can't be empty or we'll have an outage!" 
-  } 
-  validation {
-      condition     = var.min_size <= 10
-      error_message = "ASGs must have 10 or fewer instances to keep costs down." 
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+
+  owners = ["099720109477"] # Canonical Ubuntu AWS account id
+}
+
+resource "aws_instance" "hello" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t2.micro"
+  tags = {
+    Name = "HelloWorld"
   }
 }
 ```
 - [x] Use `sensitive = true` for sensitive variables.
+
+
+#### Modules
+- [x] Understand what Terraform modules are and why they are useful.
+- [x] Understand the difference between the root module and child modules.
+- [x] Know the standard module structure: `main.tf`, `variables.tf`, and `outputs.tf`.
+- [x] Know how to pass input variables into a module.
+- [x] Know how to access module outputs using `module.<name>.<output>`.
+- [x] Know how to pass output from one module as input to another module.
+- [ ] Know how to organize Terraform projects using `modules/` and `environments/`.
+- [ ] Know how to use local modules and remote modules from Git.
+- [ ] Understand module versioning using Git tags.
 
 #### Locals and Outputs
 - [x] Understand how `locals` are used to define reusable internal values.
@@ -71,17 +148,6 @@ output "upper_names" {
   value = [for name in var.names : upper(name)]
 }
 ```
-
-#### Modules
-- [x] Understand what Terraform modules are and why they are useful.
-- [x] Understand the difference between the root module and child modules.
-- [x] Know the standard module structure: `main.tf`, `variables.tf`, and `outputs.tf`.
-- [x] Know how to pass input variables into a module.
-- [x] Know how to access module outputs using `module.<name>.<output>`.
-- [x] Know how to pass output from one module as input to another module.
-- [ ] Know how to organize Terraform projects using `modules/` and `environments/`.
-- [ ] Know how to use local modules and remote modules from Git.
-- [ ] Understand module versioning using Git tags.
 
 #### Remote State
 - [x] Understand the difference between local state and remote state.
