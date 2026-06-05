@@ -59,11 +59,7 @@ set -euxo pipefail
 
 minikube delete || true
 
-minikube start \
-  --driver=docker \
-  --container-runtime=docker \
-  --cpus=2 \
-  --memory=1800mb
+minikube start --driver=docker --container-runtime=docker --cpus=2 --memory=1800mb --ports=$${NODE_PORT}:$${NODE_PORT}
 
 kubectl config use-context minikube
 
@@ -138,7 +134,7 @@ metadata:
   labels:
     app: simple-app
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: simple-app
   ports:
@@ -146,6 +142,7 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
+      nodePort: $${NODE_PORT}
 YAML
 
 kubectl rollout status deployment/simple-app -n app --timeout=300s
@@ -155,45 +152,19 @@ kubectl get svc -n app -o wide
 kubectl get configmap frontend-html -n app
 EOF
 
-echo "========== Create port-forward systemd service =========="
-
-cat <<SERVICE > /etc/systemd/system/simple-app-port-forward.service
-[Unit]
-Description=Forward EC2 port $${NODE_PORT} to Minikube Kubernetes service
-After=network-online.target docker.service
-Requires=docker.service
-
-[Service]
-User=minikube
-Environment=KUBECONFIG=/home/minikube/.kube/config
-ExecStart=/usr/local/bin/kubectl port-forward --address 0.0.0.0 -n app svc/simple-app-service $${NODE_PORT}:80
-Restart=always
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-SERVICE
-
-systemctl daemon-reload
-systemctl enable simple-app-port-forward
-systemctl restart simple-app-port-forward
-
-sleep 10
-
-echo "========== Check port-forward service =========="
-systemctl status simple-app-port-forward --no-pager || true
-
-echo "========== Verify app from EC2 host =========="
+echo "========== Verify NodePort from EC2 host =========="
 for i in $(seq 1 30); do
   if curl -fsS "http://127.0.0.1:$${NODE_PORT}" >/dev/null; then
     echo "Application is reachable on EC2 host port $${NODE_PORT}"
     exit 0
   fi
 
-  echo "Waiting for app on port $${NODE_PORT}..."
+  echo "Waiting for app on EC2 host port $${NODE_PORT}..."
   sleep 10
 done
 
 echo "Application did not become reachable on EC2 host port $${NODE_PORT}"
-journalctl -u simple-app-port-forward --no-pager -n 100 || true
+docker ps
+sudo -u minikube -H kubectl get pods -n app -o wide || true
+sudo -u minikube -H kubectl get svc -n app -o wide || true
 exit 1

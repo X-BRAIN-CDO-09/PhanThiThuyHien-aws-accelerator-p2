@@ -50,6 +50,18 @@ resource "aws_security_group_rule" "alb_egress_to_ec2_nodeport" {
   cidr_blocks = ["0.0.0.0/0"]
 }
 
+# ALB outbound should allow general traffic for AWS-managed control plane provisioning
+resource "aws_security_group_rule" "alb_egress_all" {
+  type              = "egress"
+  description       = "Allow ALB outbound traffic for managed provisioning and health checks"
+  security_group_id = aws_security_group.alb.id
+
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
 # EC2 accepts NodePort only from ALB
 resource "aws_security_group_rule" "ec2_ingress_from_alb_nodeport" {
   type              = "ingress"
