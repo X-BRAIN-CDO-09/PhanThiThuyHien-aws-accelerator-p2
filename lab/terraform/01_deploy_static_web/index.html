@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thủy Hiền | Data Engineering Portfolio</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background-color: #f8f9fa;
+            --text-color: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #ecf0f1;
+        }
+
+        nav {
+            background-color: #1a252f;
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0 1rem;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .skills-grid {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .skill-tag {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .project-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .project-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Phan Thị Thủy Hiền</h1>
+        <p>Data Engineer | Cloud Architecture | Information Systems</p>
+    </header>
+
+    <nav>
+        <a href="#about">About</a>
+        <a href="#skills">Skills & Tech</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="container">
+        <section id="about">
+            <h2>About Me</h2>
+            <p>I am an Information Systems student and tech intern currently based in Da Nang, specializing in data engineering and cloud infrastructure. I focus on building robust, scalable data pipelines and backend orchestration, bridging the gap between raw data and actionable analytics.</p>
+        </section>
+
+        <section id="skills">
+            <h2>Technical Arsenal</h2>
+            <div class="skills-grid">
+                <span class="skill-tag">Apache Airflow</span>
+                <span class="skill-tag">Apache Spark</span>
+                <span class="skill-tag">Medallion Architecture</span>
+                <span class="skill-tag">AWS (ECS Fargate, IAM, Route 53)</span>
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">SQL</span>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Featured Work</h2>
+            
+            <div class="project-card">
+                <h3>Financial Data Lakehouse Platform</h3>
+                <p><strong>Architecture:</strong> Bronze, Silver, Gold Layers</p>
+                <p>Developed an automated data platform to fetch and process financial data, including company exchanges, news sentiment, and OHLC pricing. Designed partitioned extraction strategies and orchestrated the workflow to load data into a reliable landing zone.</p>
+            </div>
+
+            <div class="project-card">
+                <h3>Deep Learning for Dermatological Diagnosis</h3>
+                <p><strong>Tech:</strong> SSD MobileNet V2, ISIC 2017 Dataset</p>
+                <p>Academic research focusing on applying deep learning computer vision models for the differential diagnosis of skin cancer versus benign lesions.</p>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Get In Touch</h2>
+            <p>Interested in collaborating on data platforms or discussing cloud architecture? Let's connect.</p>
+            <p style="margin-top: 1rem;">
+                <strong>Email:</strong> your.email@example.com <br>
+                <strong>GitHub:</strong> github.com/yourusername <br>
+                <strong>LinkedIn:</strong> linkedin.com/in/yourusername
+            </p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Phan Thị Thủy Hiền. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
