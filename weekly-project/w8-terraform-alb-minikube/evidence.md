@@ -95,12 +95,7 @@ This project maps traffic through three main port layers:
    - The frontend Nginx pod listens on container port `80` and is accessible via the node port on the EC2 host.
    - `user_data.sh` starts Minikube with `--ports=$${NODE_PORT}:$${NODE_PORT}` so the EC2 host port `30080` is mapped correctly into the Minikube node.
 
-This means the full request flow is:
-
-- User browser → `http://<ALB-DNS>` on port `80`
-- ALB forwards the request to the EC2 host on port `30080`
-- EC2 host port `30080` is mapped into Minikube as `NodePort 30080`
-- The NodePort service routes traffic to the Nginx pod, which serves content from container port `80`
+![alt text](./assets/ports_mapping.png)
 
 ## Check Pods
 
