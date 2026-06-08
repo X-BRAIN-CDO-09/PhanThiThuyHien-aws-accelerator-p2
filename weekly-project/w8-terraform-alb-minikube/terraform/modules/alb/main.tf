@@ -21,7 +21,10 @@ resource "aws_lb" "app" {
 
 resource "aws_lb_target_group" "app" {
   name        = "tg"
-  port        = var.node_port
+  
+  port        = var.node_port # EC2 port
+  # so, that means ALB target group forwards traffic to EC2 instance on port 30080
+
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
   target_type = "instance"

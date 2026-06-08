@@ -25,14 +25,18 @@ data "aws_ami" "ubuntu_2204" {
 }
 
 # Minikube
+# cloudinit provider helps render a proper cloud-init payload for user_data
 data "cloudinit_config" "minikube" {
-  gzip          = false
-  base64_encode = false
+  gzip          = false # do not compress generated cloud-init payload
+  base64_encode = false # keep rendered output as plain text instead of base64
 
+  # dynamically rendered with Terraform inputs
+  # before being sent to EC2
   part {
     filename     = "user_data.sh"
     content_type = "text/x-shellscript"
 
+    # templatefile() injects Terraform variable values into these configs
     content = templatefile("${path.root}/scripts/user_data.sh", {
       node_port       = var.node_port
       app_image       = var.app_image
