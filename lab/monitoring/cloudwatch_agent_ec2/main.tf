@@ -7,7 +7,7 @@ terraform {
   }
 }
 provider "aws" {
-	region = var.aws_region  
+  region = var.aws_region
 }
 
 # 1. Create a Role that an EC2 instance can assume
@@ -21,7 +21,7 @@ resource "aws_iam_role" "ec2_cw_role" {
         Action = "sts:AssumeRole"
         Effect = "Allow"
         Principal = {
-          Service = "://amazonaws.com"
+          Service = "ec2.amazonaws.com"
         }
       }
     ]
@@ -41,9 +41,9 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 }
 
 resource "aws_instance" "my_monitored_server" {
-  ami                  = "ami-0c55b159cbfafe1f0" # Replace with a valid Amazon Linux AMI for your region
-  instance_type        = "t3.micro"
-  
+  ami           = "ami-0c55b159cbfafe1f0" # Replace with a valid Amazon Linux AMI for your region
+  instance_type = "t3.micro"
+
   # Attaches the IAM permissions from Step 1
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
@@ -90,6 +90,5 @@ resource "aws_instance" "my_monitored_server" {
     Name = "CloudWatch-Agent-Lab"
   }
 }
-
 
 
