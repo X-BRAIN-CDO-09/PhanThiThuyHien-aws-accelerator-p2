@@ -248,10 +248,10 @@ resource "aws_cloudwatch_metric_alarm" "root_account_login" {
   metric_name = "RootAccountLoginCount"
   statistic   = "Sum"
 
-  period              = 300
-  evaluation_periods  = 1
-  threshold           = 1
-  treat_missing_data  = "notBreaching"
+  period             = 300
+  evaluation_periods = 1
+  threshold          = 1
+  treat_missing_data = "notBreaching"
 
   alarm_actions = [
     aws_sns_topic.security_alerts.arn
