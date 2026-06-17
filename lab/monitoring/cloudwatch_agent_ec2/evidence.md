@@ -7,7 +7,7 @@
 
 	`sudo systemctl status amazon-cloudwatch-agent`
 
-	![alt text](image.png)
+	![alt text](check_1.png)
 
 **Check 2: View Metrics in CloudWatch**
 
@@ -18,4 +18,4 @@ Because memory and disk metrics are custom OS-level metrics, they do not appear 
 - Click on CWAgent, then choose host.
 - Check the boxes next to them to see your live data stream on the chart (metric: mem_used_percent)
 
-    ![alt text](image-1.png)
+    ![alt text](check_2.png)
