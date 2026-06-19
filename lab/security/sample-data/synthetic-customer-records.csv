@@ -1,0 +1,5 @@
+record_id,full_name,email,phone,ssn,credit_card,notes
+1001,Avery Example,avery@example.test,+1-202-555-0101,078-05-1120,4111111111111111,SYNTHETIC TEST DATA ONLY
+1002,Jordan Example,jordan@example.test,+1-202-555-0148,219-09-9999,5555555555554444,SYNTHETIC TEST DATA ONLY
+1003,Morgan Example,morgan@example.test,+1-202-555-0186,457-55-5462,378282246310005,SYNTHETIC TEST DATA ONLY
+
